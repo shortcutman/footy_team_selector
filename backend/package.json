@@ -1,0 +1,37 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "AFL Team Selector backend",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon -e js,json,graphql",
+    "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.9.16",
+    "express": "^4.17.1",
+    "graphql-playground-middleware-express": "^1.7.12",
+    "graphql-tag": "^2.10.1"
+  },
+  "devDependencies": {
+    "apollo-server-testing": "^2.9.16",
+    "jest": "^24.9.0",
+    "nodemon": "^2.0.2"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "transform": {
+      "^.+\\.js$": "./node_modules/babel-jest"
+    },
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.js",
+      "!**/node_modules/**",
+      "!**/coverage/**"
+    ]
+  }
+}
