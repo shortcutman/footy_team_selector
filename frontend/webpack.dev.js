@@ -8,7 +8,11 @@ module.exports = merge(common, {
 	devServer: {
 		contentBase: "./dist",
 		port: 8080,
-		compress: false
+		compress: false,
+		proxy: {
+			'/graphql': 'http://localhost:80/graphql',
+			'/playground': 'http://localhost:80/playground'
+		}
 	},
 	plugins: [
 		new webpack.DefinePlugin({
