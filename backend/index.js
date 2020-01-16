@@ -5,7 +5,7 @@ const http = require('http')
 const { ApolloServer } = require('apollo-server-express')
 
 const resolvers = require('./resolvers.js')
-const typeDefs = require('./schema.js')
+const typeDefs = require('./typedefs.js')
 
 function setupGraphQLServer(app, httpServer) {
 	const server = new ApolloServer({
@@ -26,8 +26,8 @@ async function start() {
 	const graphqlServer = setupGraphQLServer(app, httpServer)
 
 	httpServer.listen(80, () => {
-		console.log(`GraphQL API running at /graphql`)
-		console.log(`GraphQL playground running at /playground`)
+		console.log(`GraphQL API running at :80/graphql`)
+		console.log(`GraphQL playground running at :80/playground`)
 	})
 }
 
