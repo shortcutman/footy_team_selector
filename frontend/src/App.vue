@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    some text here
     <searcher></searcher>
   </div>
 </template>
