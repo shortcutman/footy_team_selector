@@ -29,8 +29,9 @@ const resolvers = {
 					for (const q of queries) {
 						let qNo = +q
 						if (isNaN(qNo)) {
-							return el.firstname.toLowerCase().includes(q) ||
-								   el.lastname.toLowerCase().includes(q)
+							if (el.firstname.toLowerCase().includes(q) ||
+							    el.lastname.toLowerCase().includes(q))
+							    return true
 						} else {
 							return el.number == q
 						}
