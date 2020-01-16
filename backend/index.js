@@ -3,12 +3,11 @@ const expressPlayground = require('graphql-playground-middleware-express').defau
 const http = require('http')
 
 const { ApolloServer } = require('apollo-server-express')
-const { readFileSync } = require('fs')
 
 const resolvers = require('./resolvers.js')
+const typeDefs = require('./schema.js')
 
 function setupGraphQLServer(app, httpServer) {
-	const typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,

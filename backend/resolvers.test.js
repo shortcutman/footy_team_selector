@@ -3,15 +3,13 @@ const gql = require('graphql-tag')
 
 const { ApolloServer } = require('apollo-server-express')
 const { createTestClient } = require('apollo-server-testing')
-const { readFileSync } = require('fs')
 
-const typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 const resolvers = require('./resolvers.js')
+const typeDefs = require('./typeDefs.js')
 
 let query;
 
 beforeAll(() => {
-	const typeDefs = readFileSync('./typeDefs.graphql', 'UTF-8')
 	const server = new ApolloServer({
 		typeDefs,
 		resolvers,
