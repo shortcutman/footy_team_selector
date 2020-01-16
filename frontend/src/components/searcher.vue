@@ -1,12 +1,11 @@
 <template>
 <div>
 	<div>
-		<input type="text" name="query" v-model="query">
+		<span>Search for player: <input type="text" name="query" v-model="query"></span>
 	</div>
 	<div>
-		<p>searching for {{ query }} </p>
 		<ul v-for="result in findPlayer">
-			<li>result</li>
+			<li>{{ result.number }}: {{ result.firstname }} {{ result.lastname }}</li>
 		</ul>
 	</div>
 </div>
@@ -40,13 +39,6 @@ export default {
 			prefetch: false
 		}
 	}
-	// computed: {
-	// 	queriedResults() {
-	// 		this.$apollo.query({
-
-	// 		})
-	// 	}
-	// }
 }
 </script>
 
