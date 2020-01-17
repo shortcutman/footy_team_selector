@@ -1,7 +1,7 @@
 <template>
 <div>
 	<ol>
-		<li v-for="player in currentTeam">player {{ player.id }} {{ player.firstname }}</li>
+		<li v-for="player in currentTeam">player {{ player.firstname }}</li>
 	</ol>
 </div>
 </template>

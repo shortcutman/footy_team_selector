@@ -5,7 +5,7 @@
 	</div>
 	<div>
 		<ul>
-			<li v-for="result in findPlayer">{{ result.number }}: {{ result.firstname }} {{ result.lastname }}</li>
+			<li v-for="result in findPlayer">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd"></li>
 		</ul>
 	</div>
 </div>
@@ -19,7 +19,23 @@ export default {
 	data: () => {
 		return {
 			query: '',
-			findPlayer: []
+			findPlayer: [],
+			canAdd: true
+		}
+	},
+	methods: {
+		addPlayer(player) {
+			this.$apollo.mutate({
+				mutation: gql`
+					mutation($p:Player!) {
+						addPlayerToTeam(player:$p) @client
+					}
+				`,
+				variables: { p: player }
+			}).then(({ data }) => {
+				console.log('after mutate', data.addPlayerToTeam)
+				this.canAdd = data.addPlayerToTeam
+			})
 		}
 	},
 	apollo: {

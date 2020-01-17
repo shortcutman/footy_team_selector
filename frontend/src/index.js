@@ -14,8 +14,37 @@ Vue.use(VueApollo)
 export const moreTypeDefs = gql`
 	type ConfiguredTeam {
 		players: [Player]!
-	} 
+	}
+
+	type Mutation {
+		addPlayerToTeam(player:Player!): Boolean
+	}
 `;
+
+const res = {
+	Mutation: {
+		addPlayerToTeam: (_, {player}, {cache}) => {
+			const { currentTeam } = cache.readQuery({query: gql`{
+				currentTeam @client {
+					id
+					firstname
+					lastname
+				}
+			}`})
+			
+			if (currentTeam.length >= 18) {
+				return false
+			} else {
+				const newCurrentTeam = currentTeam
+				newCurrentTeam.push(player)
+				cache.writeData({data: {
+					currentTeam: newCurrentTeam
+				}})
+				return true
+			}
+		}
+	}
+}
 
 const cache = new InMemoryCache()
 new Vue({
@@ -26,7 +55,7 @@ new Vue({
 			}),
 			cache,
 			typeDefs: moreTypeDefs,
-			resolvers: {}
+			resolvers: res
 		})
 	}),
 	render: function (h) { return h(App) },
@@ -34,13 +63,6 @@ new Vue({
 
 cache.writeData({
 	data: {
-		currentTeam: [{
-			__typename: "Player",
-			id: "134124",
-			firstname: "bruce",
-			lastname: "wayne",
-			team: "GEELONG",
-			number: "14"
-		}]
+		currentTeam: []
 	}
 })
