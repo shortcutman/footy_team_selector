@@ -1,12 +1,12 @@
 import gql from 'graphql-tag'
 
 export const typeDefs = gql`
-	type ConfiguredTeam {
+	type Team {
 		players: [Player]!
 	}
 
 	type Mutation {
-		addPlayerToTeam(player:Player!): Boolean
+		addPlayerToTeam(player:Player!): Team!
 	}
 `;
 
@@ -29,7 +29,7 @@ const resolvers = {
 				cache.writeData({data: {
 					currentTeam: newCurrentTeam
 				}})
-				return true
+				return newCurrentTeam
 			}
 		}
 	}
