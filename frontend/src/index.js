@@ -6,45 +6,11 @@ import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http'
 
+import localstate from './localstate.js'
 import App from './App.vue'
 
 Vue.config.productionTip = false
 Vue.use(VueApollo)
-
-export const moreTypeDefs = gql`
-	type ConfiguredTeam {
-		players: [Player]!
-	}
-
-	type Mutation {
-		addPlayerToTeam(player:Player!): Boolean
-	}
-`;
-
-const res = {
-	Mutation: {
-		addPlayerToTeam: (_, {player}, {cache}) => {
-			const { currentTeam } = cache.readQuery({query: gql`{
-				currentTeam @client {
-					id
-					firstname
-					lastname
-				}
-			}`})
-			
-			if (currentTeam.length >= 18) {
-				return false
-			} else {
-				const newCurrentTeam = currentTeam
-				newCurrentTeam.push(player)
-				cache.writeData({data: {
-					currentTeam: newCurrentTeam
-				}})
-				return true
-			}
-		}
-	}
-}
 
 const cache = new InMemoryCache()
 new Vue({
@@ -54,8 +20,8 @@ new Vue({
 				uri: "http://localhost:80/graphql"
 			}),
 			cache,
-			typeDefs: moreTypeDefs,
-			resolvers: res
+			typeDefs: localstate.typeDefs,
+			resolvers: localstate.resolvers
 		})
 	}),
 	render: function (h) { return h(App) },
