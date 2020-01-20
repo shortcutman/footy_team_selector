@@ -1,7 +1,7 @@
 <template>
 <div>
 	<ol>
-		<li v-for="player in currentTeam">player {{ player.firstname }}</li>
+		<li v-for="player in currentTeam">{{player.id}} {{ player.firstname }} {{ player.lastname }} <input type="Submit" value="Delete" @click="deletePlayer(player)"></li>
 	</ol>
 </div>
 </template>
@@ -15,6 +15,20 @@ export default {
 	data: () => {
 		return {
 			currentTeam: []
+		}
+	},
+	methods: {
+		deletePlayer(player) {
+			this.$apollo.mutate({
+				mutation: gql`
+					mutation($p:Player!) {
+						removePlayerFromTeam(player:$p) @client
+					}
+				`,
+				variables: { p: player }
+			}).then(({ data }) => {
+				this.currentTeam = data.removePlayerFromTeam
+			})
 		}
 	},
 	apollo: {

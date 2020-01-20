@@ -34,6 +34,13 @@ const resolvers = {
 				}})
 				return newCurrentTeam
 			}
+		},
+		removePlayerFromTeam: (_, {player}, {cache}) => {
+			console.assert("id" in player)
+			const { currentTeam } = cache.readQuery({query: queryCurrentTeam})
+			const newTeam = currentTeam.filter(el => player.id !== el.id)
+			cache.writeData({ data: { currentTeam: newTeam }})
+			return newTeam
 		}
 	}
 }
