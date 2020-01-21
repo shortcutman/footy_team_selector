@@ -101,13 +101,13 @@ describe('find player', () => {
 			}`
 		})
 
-		expect(findQuery.data.findPlayer).toMatchObject([{
+		expect(findQuery.data.findPlayer).toEqual(expect.arrayContaining([{
 			id: '993946',
 			firstname: 'Ben',
 			lastname: 'Keays',
 			team: 'ADELAIDE',
 			number: 1,
-		}])
+		}]))
 	})
 
 	test('Find by firstname', async () => {
