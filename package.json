@@ -4,7 +4,8 @@
   "description": "Make footy team graphics",
   "main": "",
   "scripts": {
-    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\""
+    "dev": "concurrently \"cd frontend && npm run dev\" \"cd backend && npm run dev\"",
+    "test": "concurrently \"cd frontend && npm run test\" \"cd backend && npm run test\""
   },
   "author": "",
   "license": "ISC",
