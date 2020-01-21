@@ -1,9 +1,6 @@
 #generated files
 frontend/dist/main.js
 
-#mongo container data
-data/
-
 .env
 .DS_Store
 node_modules/
