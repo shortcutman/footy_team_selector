@@ -50,7 +50,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #team {
 	display: grid;
 	grid-template-columns: auto auto auto;

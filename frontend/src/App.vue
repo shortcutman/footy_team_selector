@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <searcher id="search"></searcher>
-    <team id="team_section"></team>
+    <team id="team"></team>
   </div>
 </template>
 
@@ -18,7 +18,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 #app {
 	display: flex;
@@ -29,7 +29,7 @@ export default {
 	flex: 25%;
 }
 
-#team_section {
+#team {
   margin: auto;
 	flex: 50%;
 }
