@@ -1,8 +1,12 @@
 <template>
 <div>
-	<ol>
-		<li v-for="player in currentTeam">{{player.id}} {{ player.firstname }} {{ player.lastname }} <input type="Submit" value="Delete" @click="deletePlayer(player)"></li>
-	</ol>
+	<div id="team">
+		<div class="player" v-for="player in currentTeam">
+			<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
+			<div class="number">{{ player.number }}</div>
+			<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+		</div>
+	</div>
 </div>
 </template>
 
@@ -38,6 +42,7 @@ export default {
 					id
 					firstname
 					lastname
+					number
 				}
 			}`
 		}
@@ -46,5 +51,44 @@ export default {
 </script>
 
 <style>
-	
+#team {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	/*grid-template-rows: auto;*/
+}
+
+.player {
+	width: 120px;
+	height: 50px;
+
+	display: grid;
+	grid-template-areas: "h h" "n c";
+
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border-color: black;
+	border-radius: 8px;
+	border-style: solid;
+	border-width: 2px;
+}
+
+.player > * {
+	margin: auto;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.player > .name {
+	grid-area: h;
+}
+
+.player > .number {
+	grid-area: n;
+}
+
+.player > .controls {
+	grid-area: c;
+}
 </style>
