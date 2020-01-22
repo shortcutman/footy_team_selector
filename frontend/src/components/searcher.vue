@@ -5,7 +5,7 @@
 	</div>
 	<div>
 		<ul>
-			<li v-for="result in findPlayer">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd"></li>
+			<li v-for="result in findPlayer">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)"></li>
 		</ul>
 	</div>
 </div>
@@ -34,7 +34,13 @@ export default {
 				variables: { p: player }
 			}).then(({ data }) => {
 				this.canAdd = data.addPlayerToTeam.length < 18
+			}).catch((error) => {
+				console.log(error)
 			})
+		},
+		inCurrentTeam(player) {
+			const res = this.currentTeam.find((el) => el.id === player.id)
+			return res
 		}
 	},
 	apollo: {
@@ -52,6 +58,16 @@ export default {
 				return { q: this.query }
 			},
 			prefetch: false
+		},
+		currentTeam: {
+			query: gql`{
+				currentTeam @client {
+					id
+					firstname
+					lastname
+					number
+				}
+			}`
 		}
 	}
 }

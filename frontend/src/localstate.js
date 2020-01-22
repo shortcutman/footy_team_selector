@@ -26,6 +26,8 @@ const resolvers = {
 			
 			if (currentTeam.length >= 18) {
 				return false
+			} else if (currentTeam.find(el => el.id === player.id)) {
+				return false
 			} else {
 				const newCurrentTeam = currentTeam
 				newCurrentTeam.push(player)
