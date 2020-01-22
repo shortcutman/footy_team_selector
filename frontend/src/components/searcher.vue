@@ -33,7 +33,6 @@ export default {
 				`,
 				variables: { p: player }
 			}).then(({ data }) => {
-				console.log('after mutate', data.addPlayerToTeam)
 				this.canAdd = data.addPlayerToTeam.length < 18
 			})
 		}
