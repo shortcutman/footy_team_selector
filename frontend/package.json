@@ -14,7 +14,8 @@
     "graphql": "^14.5.8",
     "graphql-tag": "^2.10.1",
     "vue": "^2.6.10",
-    "vue-apollo": "^3.0.2"
+    "vue-apollo": "^3.0.2",
+    "vue-drag-drop": "^1.1.4"
   },
   "devDependencies": {
     "css-loader": "^3.4.2",
