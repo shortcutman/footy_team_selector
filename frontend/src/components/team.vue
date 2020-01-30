@@ -1,10 +1,14 @@
 <template>
 <div>
 	<div id="team">
-		<div class="player" v-for="player in currentTeam">
-			<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
-			<div class="number">{{ player.number }}</div>
-			<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+		<div class="player" v-for="player in currentTeam" :key="player.id">
+			<drag :transfer-data="player">
+				<drop @drop="swapPlayers(player, ...arguments)">
+					<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
+					<div class="number">{{ player.number }} {{ mutateCount }}</div>
+					<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+				</drop>
+			</drag>
 		</div>
 	</div>
 </div>
@@ -13,6 +17,7 @@
 <script>
 
 import gql from 'graphql-tag'
+import {Drag, Drop} from 'vue-drag-drop'
 
 export default {
 	name: 'team',
@@ -33,6 +38,19 @@ export default {
 			}).then(({ data }) => {
 				this.currentTeam = data.removePlayerFromTeam
 			})
+		},
+		swapPlayers(dropPlayer, dragPlayer) {
+			this.$apollo.mutate({
+				mutation: gql`
+					mutation($pA:Player! $pB:Player!) {
+						swapPlayersInTeam(playerA:$pA playerB:$pB) @client
+					}
+				`,
+				variables: {
+					pA: dropPlayer,
+					pB: dragPlayer
+				}
+			})
 		}
 	},
 	apollo: {
@@ -46,6 +64,10 @@ export default {
 				}
 			}`
 		}
+	},
+	components: {
+		Drag,
+		Drop
 	}
 }
 </script>
