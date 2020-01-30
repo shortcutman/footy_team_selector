@@ -51,8 +51,8 @@ const resolvers = {
 			console.assert("id" in playerA)
 			console.assert("id" in playerB)
 
-			const { currentTeam } = cache.readQuery({query: queryCurrentTeam})
-			// console.log('current team, before mutate localstate.js', currentTeam[0].id, currentTeam[1].id)
+			//duplicate array to force vue update
+			const currentTeam = Array.from(cache.readQuery({query: queryCurrentTeam}).currentTeam)
 			const playerAIndex = currentTeam.findIndex(player => player.id === playerA.id)
 			const playerBIndex = currentTeam.findIndex(player => player.id === playerB.id)
 			if (playerAIndex === -1 || playerBIndex === -1) {
@@ -64,7 +64,6 @@ const resolvers = {
 			currentTeam[playerBIndex] = tempPlayerA
 
 			cache.writeData({ data: { currentTeam }})
-			// console.log('current team, after mutate localstate.js', currentTeam[0].id, currentTeam[1].id)
 			return currentTeam
 		}
 	}
