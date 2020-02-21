@@ -70,6 +70,7 @@ const resolvers = {
 }
 
 export default {
+	queryCurrentTeam,
 	resolvers,
 	typeDefs
 }
