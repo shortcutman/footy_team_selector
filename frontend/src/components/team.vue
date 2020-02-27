@@ -1,12 +1,16 @@
 <template>
 <div>
 	<div id="team">
-		<div class="player" v-for="player in currentTeam" :key="player.id">
+		<div v-for="player in currentTeam" :key="player.id">
 			<drag :transfer-data="player">
-				<drop @drop="swapPlayers(player, ...arguments)">
-					<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
-					<div class="number">{{ player.number }} {{ mutateCount }}</div>
-					<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+				<drop @drop="swapPlayers(player, ...arguments)"
+					  @dragover="dragOver(...arguments)"
+				  	  @dragleave="dragLeave(...arguments)">
+					<div class="player">
+						<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
+						<div class="number">{{ player.number }}</div>
+						<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+					</div>
 				</drop>
 			</drag>
 		</div>
@@ -39,7 +43,15 @@ export default {
 				this.currentTeam = data.removePlayerFromTeam
 			})
 		},
-		swapPlayers(dropPlayer, dragPlayer) {
+		dragOver(transferData, nativeEvent) {
+			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
+			player.classList.add('selection')
+		},
+		dragLeave(transferData, nativeEvent) {
+			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
+			player.classList.remove('selection')
+		},
+		swapPlayers(dropPlayer, dragPlayer, nativeEvent) {
 			this.$apollo.mutate({
 				mutation: gql`
 					mutation($pA:Player! $pB:Player!) {
@@ -51,6 +63,9 @@ export default {
 					pB: dragPlayer
 				}
 			})
+
+			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
+			player.classList.remove('selection')
 		}
 	},
 	apollo: {
@@ -94,6 +109,10 @@ export default {
 	border-radius: 8px;
 	border-style: solid;
 	border-width: 2px;
+}
+
+.selection {
+	background-color: grey;
 }
 
 .player > * {
