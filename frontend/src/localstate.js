@@ -6,7 +6,6 @@ const queryCurrentTeam = gql`{
 		firstname
 		lastname
 		number
-		team
 	}
 }`
 
