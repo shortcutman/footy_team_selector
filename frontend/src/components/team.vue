@@ -97,6 +97,7 @@ export default {
 .player {
 	width: 120px;
 	height: 50px;
+	background-color: white;
 
 	display: grid;
 	grid-template-areas: "h h" "n c";
