@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import teamUtilities from './team-utilities.js'
 
 const queryCurrentTeam = gql`{
 	currentTeam @client {
@@ -11,7 +12,28 @@ const queryCurrentTeam = gql`{
 
 export const typeDefs = gql`
 	type Team {
-		players: [Player]!
+		FPOCK1: Player
+		FULLF: Player
+		FPOCK2: Player
+		FFLNK1: Player
+		HALFF: Player
+		FFLNK2: Player
+		WING1: Player
+		CENTRE: Player
+		WING2: Player
+		BFLNK1: Player
+		HALFB: Player
+		BFLNK2: Player
+		BPOCK1: Player
+		FULLB: Player
+		BPOCK2: Player
+		RUCK: Player
+		ROVER: Player
+		RKRVR: Player
+		INT1: Player
+		INT2: Player
+		INT3: Player
+		INT4: Player
 	}
 
 	type Mutation {
@@ -24,44 +46,67 @@ export const typeDefs = gql`
 const resolvers = {
 	Mutation: {
 		addPlayerToTeam: (_, {player}, {cache}) => {
-			const { currentTeam } = cache.readQuery({query: queryCurrentTeam})
+			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
 			
-			if (currentTeam.length >= 18) {
+			if (teamUtilities.teamLength(currentTeam) >= 22) {
 				return false
-			} else if (currentTeam.find(el => el.id === player.id)) {
+			} else if (Object.values(currentTeam).find(el => typeof el === 'Object' && el.id === player.id)) {
 				return false
 			} else {
-				const newCurrentTeam = currentTeam
-				newCurrentTeam.push(player)
+				const empty = Object.keys(currentTeam).find(el => currentTeam[el] === null)
+				currentTeam[empty] = player
 				cache.writeData({data: {
-					currentTeam: newCurrentTeam
+					currentTeam: currentTeam
 				}})
-				return newCurrentTeam
+				return currentTeam
 			}
 		},
 		removePlayerFromTeam: (_, {player}, {cache}) => {
 			console.assert("id" in player)
-			const { currentTeam } = cache.readQuery({query: queryCurrentTeam})
-			const newTeam = currentTeam.filter(el => player.id !== el.id)
-			cache.writeData({ data: { currentTeam: newTeam }})
-			return newTeam
+			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
+
+			for (const key in currentTeam) {
+				if (key !== '__typename') {
+					const itPlayer = currentTeam[key]
+					if (itPlayer.id === player.id) {
+						currentTeam[key] = null
+						break
+					}
+				}
+			}
+
+			cache.writeData({ data: { currentTeam }})
+			return currentTeam
 		},
 		swapPlayersInTeam: (_, {playerA, playerB}, {cache}) => {
 			console.assert("id" in playerA)
 			console.assert("id" in playerB)
 
-			//duplicate array to force vue update
-			const currentTeam = Array.from(cache.readQuery({query: queryCurrentTeam}).currentTeam)
-			const playerAIndex = currentTeam.findIndex(player => player.id === playerA.id)
-			const playerBIndex = currentTeam.findIndex(player => player.id === playerB.id)
-			if (playerAIndex === -1 || playerBIndex === -1) {
+			let positionA, positionB
+			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
+			for (const position in currentTeam) {
+				if (position === '__typename' || currentTeam[position] === undefined) {
+					continue
+				} else if (currentTeam[position].id === playerA.id) {
+					positionA = position
+				} else if (currentTeam[position].id === playerB.id) {
+					positionB = position
+				}
+
+				if (positionA !== undefined && positionB !== undefined) {
+					break
+				}
+			}
+
+			if (positionA === undefined || positionB === undefined) {
 				throw "Invalid ID's"
 			}
 
-			const tempPlayerA = currentTeam[playerAIndex]
-			currentTeam[playerAIndex] = currentTeam[playerBIndex]
-			currentTeam[playerBIndex] = tempPlayerA
+			const tempA = currentTeam[positionA]
+			currentTeam[positionA] = currentTeam[positionB]
+			currentTeam[positionB] = playerA
 
+			//this used to write with a fresh new array object to force a vue update
 			cache.writeData({ data: { currentTeam }})
 			return currentTeam
 		}
@@ -70,6 +115,7 @@ const resolvers = {
 
 export default {
 	queryCurrentTeam,
+	team: teamUtilities,
 	resolvers,
 	typeDefs
 }

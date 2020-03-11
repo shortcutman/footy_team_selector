@@ -29,7 +29,7 @@ beforeAll(() => {
 	cache = new InMemoryCache()
 	cache.writeData({
 		data: {
-			currentTeam: []
+			currentTeam: localstate.team.emptyTeam()
 		}
 	})
 })
@@ -43,14 +43,21 @@ describe('mutation tests', () => {
 				cache
 			})
 
-			expect(result.length === 1)
+			expect(localstate.team.teamLength(result) === 1)
 		})
 
 		describe('errors', () => {
 			let errorCache;
 
 			beforeAll(() => {
-				const currentTeam = new Array(17).fill(playerA)
+				const currentTeam = localstate.team.emptyTeam()
+				let count = 0
+				for (const key in Object.keys(currentTeam)) {
+					if (count > 21) break
+
+					currentTeam[key] = playerA
+				}
+
 				errorCache = new InMemoryCache()
 				errorCache.writeData({
 					data: {
@@ -95,7 +102,7 @@ describe('mutation tests', () => {
 			}, {
 				cache
 			})
-			expect(result.length === 0)
+			expect(localstate.team.teamLength(result) === 0)
 		})
 	})
 
@@ -106,17 +113,17 @@ describe('mutation tests', () => {
 			}, {
 				cache
 			})
-			expect(resultAddA.length === 1)
-			expect(resultAddA[0]).toMatchObject(playerA)
+			expect(localstate.team.teamLength(resultAddA) === 1)
+			expect(resultAddA["FPOCK1"]).toMatchObject(playerA)
 
 			const resultAddB = localstate.resolvers.Mutation.addPlayerToTeam(null, {
 				player: playerB
 			}, {
 				cache
 			})
-			expect(resultAddB.length === 2)
-			expect(resultAddB[0]).toMatchObject(playerA)
-			expect(resultAddB[1]).toMatchObject(playerB)
+			expect(localstate.team.teamLength(resultAddB) === 2)
+			expect(resultAddB["FPOCK1"]).toMatchObject(playerA)
+			expect(resultAddB["FULLF"]).toMatchObject(playerB)
 
 			const resultSwap = localstate.resolvers.Mutation.swapPlayersInTeam(null, {
 				playerA,
@@ -124,9 +131,9 @@ describe('mutation tests', () => {
 			}, {
 				cache
 			})
-			expect(resultSwap.length === 2)
-			expect(resultSwap[0]).toMatchObject(playerB)
-			expect(resultSwap[1]).toMatchObject(playerA)
+			expect(localstate.team.teamLength(resultSwap) === 2)
+			expect(resultSwap["FPOCK1"]).toMatchObject(playerB)
+			expect(resultSwap["FULLF"]).toMatchObject(playerA)
 		})
 
 		test('error', () => {
