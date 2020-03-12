@@ -53,7 +53,7 @@ describe('mutation tests', () => {
 				const currentTeam = localstate.team.emptyTeam()
 				let count = 0
 				for (const position in currentTeam) {
-					if (count >= 22) break
+					if (count >= 21) break
 
 					if (position != '__typename') {
 						currentTeam[position] = playerA
@@ -69,7 +69,10 @@ describe('mutation tests', () => {
 				})
 			})
 
-			test('mixed ids', () => {
+			test('duplicate ids', () => {
+				const { currentTeam } = errorCache.readQuery({query: localstate.team.fullTeamQuery})
+				expect(localstate.team.teamLength(currentTeam) === 21)
+
 				const resultFail = localstate.resolvers.Mutation.addPlayerToTeam(null, {
 					player: playerA
 				}, {
@@ -82,7 +85,8 @@ describe('mutation tests', () => {
 				}, {
 					cache: errorCache
 				})
-				expect(resultSucceed !== false)				
+				expect(resultSucceed !== false)
+				expect(localstate.team.teamLength(resultSucceed) === 22)
 			})
 
 			test('team too big', () => {

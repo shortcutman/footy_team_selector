@@ -47,10 +47,10 @@ const resolvers = {
 	Mutation: {
 		addPlayerToTeam: (_, {player}, {cache}) => {
 			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
-			
+
 			if (teamUtilities.teamLength(currentTeam) >= 22) {
 				return false
-			} else if (Object.values(currentTeam).find(el => typeof el === 'Object' && el.id === player.id)) {
+			} else if (Object.values(currentTeam).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id)) {
 				return false
 			} else {
 				const empty = Object.keys(currentTeam).find(el => currentTeam[el] === null)
