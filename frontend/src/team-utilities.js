@@ -188,10 +188,13 @@ function emptyTeam() {
 }
 
 function teamLength(team) {
-	return Object.keys(team).reduce((accum, el) => {
-		if (el === '__typename') return
-		else if (team[el] !== null) accum++
-	})
+	return Object.keys(team).reduce((accum, position) => {
+		if (position !== '__typename' && team[position] !== null) {
+			return accum +1
+		} else {
+			return accum
+		}
+	}, 0)
 }
 
 export default {
