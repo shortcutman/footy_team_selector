@@ -52,10 +52,13 @@ describe('mutation tests', () => {
 			beforeAll(() => {
 				const currentTeam = localstate.team.emptyTeam()
 				let count = 0
-				for (const key in Object.keys(currentTeam)) {
-					if (count > 21) break
+				for (const position in currentTeam) {
+					if (count >= 22) break
 
-					currentTeam[key] = playerA
+					if (position != '__typename') {
+						currentTeam[position] = playerA
+						count++
+					}
 				}
 
 				errorCache = new InMemoryCache()
@@ -83,6 +86,9 @@ describe('mutation tests', () => {
 			})
 
 			test('team too big', () => {
+				const { currentTeam } = errorCache.readQuery({query: localstate.team.fullTeamQuery})
+				expect(localstate.team.teamLength(currentTeam) === 22)
+
 				const result = localstate.resolvers.Mutation.addPlayerToTeam(null, {
 					player: playerA
 				}, {
