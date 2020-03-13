@@ -65,15 +65,18 @@ const resolvers = {
 			console.assert("id" in player)
 			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
 
+			let removed = false
 			for (const key in currentTeam) {
 				if (key !== '__typename') {
 					const itPlayer = currentTeam[key]
 					if (itPlayer.id === player.id) {
 						currentTeam[key] = null
+						removed = true
 						break
 					}
 				}
 			}
+			console.assert(removed, "Player requested for removal not in team")
 
 			cache.writeData({ data: { currentTeam }})
 			return currentTeam
