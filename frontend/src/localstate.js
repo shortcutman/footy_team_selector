@@ -85,7 +85,7 @@ const resolvers = {
 			let positionA, positionB
 			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
 			for (const position in currentTeam) {
-				if (position === '__typename' || currentTeam[position] === undefined) {
+				if (position === '__typename' || currentTeam[position] === null) {
 					continue
 				} else if (currentTeam[position].id === playerA.id) {
 					positionA = position

@@ -146,39 +146,47 @@ describe('mutation tests', () => {
 			expect(resultSwap["FULLF"]).toMatchObject(playerA)
 		})
 
-		test('error', () => {
-			expect(() => {
-					localstate.resolvers.Mutation.swapPlayersInTeam(null, {
-					playerA: {
-						id: 99999999
-					},
-					playerB
-				}, {
-					cache
-				})
-			}).toThrow()
-			expect(() => {
-					localstate.resolvers.Mutation.swapPlayersInTeam(null, {
-					playerA,
-					playerB: {
-						id: 99999999
-					}
-				}, {
-					cache
-				})
-			}).toThrow()
-			expect(() => {
-					localstate.resolvers.Mutation.swapPlayersInTeam(null, {
-					playerA: {
-						id: 99999999
-					},
-					playerB: {
-						id: 99999999
-					}
-				}, {
-					cache
-				})
-			}).toThrow()
+		describe('errors', () => {
+			test('nonexistent A', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA: {
+							id: 99999999
+						},
+						playerB
+					}, {
+						cache
+					})
+				}).toThrow("Invalid ID's")
+			})
+
+			test('nonexistent B', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA,
+						playerB: {
+							id: 99999999
+						}
+					}, {
+						cache
+					})
+				}).toThrow("Invalid ID's")
+			})
+
+			test('nothing existent', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA: {
+							id: 99999999
+						},
+						playerB: {
+							id: 99999999
+						}
+					}, {
+						cache
+					})
+				}).toThrow("Invalid ID's")
+			})
 		})
 	})
 })
