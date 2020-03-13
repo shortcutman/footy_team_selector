@@ -125,6 +125,17 @@ describe('mutation tests', () => {
 			})
 			expect(localstate.team.teamLength(result) === 0)
 		})
+
+		test('remove nonexistent', () => {
+			addAToTeam() //to compare against something it isn't
+
+			const result = localstate.resolvers.Mutation.removePlayerFromTeam(null, {
+				player: playerB
+			}, {
+				cache
+			})
+			expect(localstate.team.teamLength(result) === 0)
+		})
 	})
 
 	describe('swapPlayersInTeam', () => {
