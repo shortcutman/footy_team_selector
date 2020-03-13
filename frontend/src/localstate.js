@@ -67,7 +67,7 @@ const resolvers = {
 
 			let removed = false
 			for (const key in currentTeam) {
-				if (key !== '__typename') {
+				if (key !== '__typename' && currentTeam[key] !== null) {
 					const itPlayer = currentTeam[key]
 					if (itPlayer.id === player.id) {
 						currentTeam[key] = null
