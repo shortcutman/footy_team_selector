@@ -25,25 +25,31 @@ const playerB = {
 	__typename: 'Player'
 }
 
-beforeAll(() => {
+function resetCache() {
 	cache = new InMemoryCache()
 	cache.writeData({
 		data: {
 			currentTeam: localstate.team.emptyTeam()
 		}
 	})
-})
+}
+
+function addAToTeam() {
+	const result = localstate.resolvers.Mutation.addPlayerToTeam(null, {
+		player: playerA
+	}, {
+		cache
+	})
+
+	expect(localstate.team.teamLength(result) === 1)
+}
 
 describe('mutation tests', () => {
 	describe('addPlayerToTeam', () => {
-		test('successful call', () => {
-			const result = localstate.resolvers.Mutation.addPlayerToTeam(null, {
-				player: playerA
-			}, {
-				cache
-			})
+		beforeAll(resetCache)
 
-			expect(localstate.team.teamLength(result) === 1)
+		test('successful call', () => {
+			addAToTeam
 		})
 
 		describe('errors', () => {
@@ -106,6 +112,11 @@ describe('mutation tests', () => {
 	})
 
 	describe('removePlayerFromTeam', () => {
+		beforeAll(() => {
+			resetCache()
+			addAToTeam()
+		})
+
 		test('successful call', () => {
 			const result = localstate.resolvers.Mutation.removePlayerFromTeam(null, {
 				player: playerA
@@ -117,6 +128,8 @@ describe('mutation tests', () => {
 	})
 
 	describe('swapPlayersInTeam', () => {
+		beforeAll(resetCache)
+
 		test('successful call', () => {
 			const resultAddA = localstate.resolvers.Mutation.addPlayerToTeam(null, {
 				player: playerA
