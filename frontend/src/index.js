@@ -29,6 +29,6 @@ new Vue({
 
 cache.writeData({
 	data: {
-		currentTeam: []
+		currentTeam: localstate.team.emptyTeam()
 	}
 })
