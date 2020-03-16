@@ -20,6 +20,7 @@
 
 <script>
 
+import teamUtilities from '../team-utilities.js'
 import gql from 'graphql-tag'
 import {Drag, Drop} from 'vue-drag-drop'
 
@@ -70,14 +71,7 @@ export default {
 	},
 	apollo: {
 		currentTeam: {
-			query: gql`{
-				currentTeam @client {
-					id
-					firstname
-					lastname
-					number
-				}
-			}`
+			query: teamUtilities.fullTeamQuery
 		}
 	},
 	components: {
