@@ -197,8 +197,13 @@ function teamLength(team) {
 	}, 0)
 }
 
+function playerInTeam(player, team) {
+	return Object.values(team).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id)
+}
+
 export default {
 	fullTeamQuery,
 	emptyTeam,
-	teamLength
+	teamLength,
+	playerInTeam
 }
