@@ -1,15 +1,20 @@
 <template>
 <div>
 	<div id="team">
-		<div v-for="player in currentTeam" :key="player.id">
+		<div v-for="(player, position) in currentTeam" >
 			<drag :transfer-data="player">
 				<drop @drop="swapPlayers(player, ...arguments)"
 					  @dragover="dragOver(...arguments)"
 				  	  @dragleave="dragLeave(...arguments)">
-					<div class="player">
+					<div v-if="player != null && position != '__typename'" class="player">
 						<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
 						<div class="number">{{ player.number }}</div>
 						<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+					</div>
+					<div v-else-if="position != '__typename'" class="player">
+						<div class="name">Nobody here</div>
+						<div class="number">0</div>
+						<div class="controls"></div>
 					</div>
 				</drop>
 			</drag>
