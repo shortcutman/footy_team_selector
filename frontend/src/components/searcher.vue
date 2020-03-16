@@ -34,14 +34,13 @@ export default {
 				`,
 				variables: { p: player }
 			}).then(({ data }) => {
-				this.canAdd = data.addPlayerToTeam.length < 18
+				this.canAdd = teamUtilities.teamLength(data.addPlayerToTeam) < 22
 			}).catch((error) => {
 				console.log(error)
 			})
 		},
 		inCurrentTeam(player) {
-			const res = this.currentTeam.find((el) => el.id === player.id)
-			return res
+			return teamUtilities.playerInTeam(player, this.currentTeam)
 		}
 	},
 	apollo: {
