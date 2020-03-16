@@ -1,15 +1,6 @@
 import gql from 'graphql-tag'
 import teamUtilities from './team-utilities.js'
 
-const queryCurrentTeam = gql`{
-	currentTeam @client {
-		id
-		firstname
-		lastname
-		number
-	}
-}`
-
 export const typeDefs = gql`
 	type Team {
 		FPOCK1: Player
@@ -117,7 +108,6 @@ const resolvers = {
 }
 
 export default {
-	queryCurrentTeam,
 	team: teamUtilities,
 	resolvers,
 	typeDefs
