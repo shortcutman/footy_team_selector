@@ -198,7 +198,7 @@ function teamLength(team) {
 }
 
 function playerInTeam(player, team) {
-	return Object.values(team).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id)
+	return Object.values(team).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id) ? true : false
 }
 
 export default {
