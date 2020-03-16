@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import teamUtilities from '../team-utilities.js'
 import gql from 'graphql-tag'
 
 export default {
@@ -60,14 +61,7 @@ export default {
 			prefetch: false
 		},
 		currentTeam: {
-			query: gql`{
-				currentTeam @client {
-					id
-					firstname
-					lastname
-					number
-				}
-			}`
+			query: teamUtilities.fullTeamQuery
 		}
 	}
 }
