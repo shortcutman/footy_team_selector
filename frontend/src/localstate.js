@@ -73,8 +73,9 @@ const resolvers = {
 			return currentTeam
 		},
 		swapPlayersInTeam: (_, {playerA, playerB}, {cache}) => {
-			console.assert("id" in playerA)
-			console.assert("id" in playerB)
+			if (!playerA || !("id" in playerA) || !playerB || !("id" in playerB)) {
+				throw new Error("Must have valid input players")
+			}
 
 			let positionA, positionB
 			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})

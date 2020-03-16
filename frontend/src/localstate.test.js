@@ -211,6 +211,62 @@ describe('mutation tests', () => {
 					})
 				}).toThrow("Invalid ID's")
 			})
+
+			test('playerA null', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA: null,
+						playerB: {
+							id: 99999999
+						}
+					}, {
+						cache
+					})
+				}).toThrow("Must have valid input players")
+			})
+
+			test('playerA without ID', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA: {
+							firstname: "Bruce"
+						},
+						playerB: {
+							id: 99999999
+						}
+					}, {
+						cache
+					})
+				}).toThrow("Must have valid input players")
+			})
+
+			test('playerB null', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA: {
+							id: 99999999
+						},
+						playerB: null
+					}, {
+						cache
+					})
+				}).toThrow("Must have valid input players")
+			})
+
+			test('playerB without ID', () => {
+				expect(() => {
+						localstate.resolvers.Mutation.swapPlayersInTeam(null, {
+						playerA: {
+							id: 99999999
+						},
+						playerB: {
+							firstname: "Bruce"
+						}
+					}, {
+						cache
+					})
+				}).toThrow("Must have valid input players")
+			})
 		})
 	})
 })
