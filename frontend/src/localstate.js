@@ -31,6 +31,7 @@ export const typeDefs = gql`
 		addPlayerToTeam(player:Player!): Team!
 		removePlayerFromTeam(player:Player!): Team!
 		swapPlayersInTeam(playerA:Player! playerB:Player!): Team!
+		swapPositionsInTeam(positionA:String! positionB:String!): Team!
 	}
 `;
 
@@ -102,6 +103,16 @@ const resolvers = {
 			currentTeam[positionB] = playerA
 
 			//this used to write with a fresh new array object to force a vue update
+			cache.writeData({ data: { currentTeam }})
+			return currentTeam
+		},
+		swapPositionsInTeam: (_, {positionA, positionB}, {cache}) => {
+			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
+
+			const tempSwap = currentTeam[positionA]
+			currentTeam[positionA] = currentTeam[positionB]
+			currentTeam[positionB] = tempSwap
+
 			cache.writeData({ data: { currentTeam }})
 			return currentTeam
 		}
