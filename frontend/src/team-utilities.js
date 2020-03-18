@@ -190,12 +190,24 @@ function emptyTeam() {
 function teamLength(team) {
 	return Object.keys(team).reduce((accum, position) => {
 		if (position !== '__typename' && team[position] !== null) {
-			return accum +1
+			return accum + 1
 		} else {
 			return accum
 		}
 	}, 0)
 }
+
+function calcMaxTeamLength() {
+	return Object.keys(emptyTeam()).reduce((accum, position) => {
+		if (position !== '__typename') {
+			return accum + 1
+		} else {
+			return accum
+		}
+	}, 0)
+}
+
+const maxTeamLength = calcMaxTeamLength()
 
 function playerInTeam(player, team) {
 	return Object.values(team).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id) ? true : false
@@ -205,5 +217,6 @@ export default {
 	fullTeamQuery,
 	emptyTeam,
 	teamLength,
+	maxTeamLength,
 	playerInTeam
 }

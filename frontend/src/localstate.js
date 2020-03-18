@@ -40,7 +40,7 @@ const resolvers = {
 		addPlayerToTeam: (_, {player}, {cache}) => {
 			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
 
-			if (teamUtilities.teamLength(currentTeam) >= 22) {
+			if (teamUtilities.teamLength(currentTeam) >= teamUtilities.maxTeamLength) {
 				return false
 			} else if (teamUtilities.playerInTeam(player, currentTeam)) {
 				return false

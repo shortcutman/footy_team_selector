@@ -100,12 +100,12 @@ describe('mutation tests', () => {
 					cache: errorCache
 				})
 				expect(resultSucceed !== false)
-				expect(localstate.team.teamLength(resultSucceed) === 22)
+				expect(localstate.team.teamLength(resultSucceed) === localstate.team.maxTeamLength)
 			})
 
 			test('team too big', () => {
 				const { currentTeam } = errorCache.readQuery({query: localstate.team.fullTeamQuery})
-				expect(localstate.team.teamLength(currentTeam) === 22)
+				expect(localstate.team.teamLength(currentTeam) === localstate.team.maxTeamLength)
 
 				const result = localstate.resolvers.Mutation.addPlayerToTeam(null, {
 					player: playerA

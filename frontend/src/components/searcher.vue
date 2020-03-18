@@ -34,7 +34,7 @@ export default {
 				`,
 				variables: { p: player }
 			}).then(({ data }) => {
-				this.canAdd = teamUtilities.teamLength(data.addPlayerToTeam) < 22
+				this.canAdd = teamUtilities.teamLength(data.addPlayerToTeam) < teamUtilities.maxTeamLength
 			}).catch((error) => {
 				console.log(error)
 			})
