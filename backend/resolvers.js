@@ -40,7 +40,7 @@ const resolvers = {
 
 			return {
 				results: slicedResults,
-				nextCursor: slicedResults.length < 10 ? -1 : cursorStride
+				nextCursor: slicedResults.length < 10 ? -1 : cursor + cursorStride
 			}
 		}
 	}

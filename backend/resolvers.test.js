@@ -133,7 +133,7 @@ describe('find player', () => {
 		expect(findQuery.data.findPlayer.nextCursor === 10)
 	})
 
-	test('Find by number, increment cursor', async () => {
+	test('Find by number, increment cursor, 1 extra page', async () => {
 		const findQuery = await query({
 			query: findGQLwithCursor,
 			variables: {
@@ -147,6 +147,22 @@ describe('find player', () => {
 			id: '294674'
 		})
 		expect(findQuery.data.findPlayer.nextCursor === -1)
+	})
+
+	test('Find by text, increment cursor, multiple extra pages', async () => {
+		const findQuery = await query({
+			query: findGQLwithCursor,
+			variables: {
+				q: "j",
+				c: 10
+			}
+		})
+
+		expect(findQuery.data.findPlayer.results.length === 10)
+		expect(findQuery.data.findPlayer.results[0]).toMatchObject({
+			id: '1002347'
+		})
+		expect(findQuery.data.findPlayer.nextCursor === 20)
 	})
 
 	test('Find by firstname', async () => {
