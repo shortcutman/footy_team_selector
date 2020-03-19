@@ -21,17 +21,16 @@ export default {
 <style scoped>
 
 #app {
-	display: flex;
-	flex-direction: row;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 #search {
-	flex: 25%;
 }
 
 #team {
-  margin: auto;
-	flex: 50%;
 }
 
 </style>

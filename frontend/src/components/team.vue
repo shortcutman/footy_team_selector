@@ -88,9 +88,8 @@ export default {
 
 <style scoped>
 #team {
-	display: grid;
+	display: inline-grid;
 	grid-template-columns: auto auto auto;
-	/*grid-template-rows: auto;*/
 }
 
 .player {
