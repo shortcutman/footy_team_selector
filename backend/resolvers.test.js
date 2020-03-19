@@ -87,43 +87,77 @@ describe('getPlayerByNumber', () => {
 	})
 })
 
+const findGQL = gql`query($q:String!) {
+	findPlayer(query:$q) {
+		results {
+			id
+			firstname
+			lastname
+			number
+			team
+		}
+		nextCursor
+	}
+}`
+
+const findGQLwithCursor = gql`query($q:String! $c:Int!) {
+	findPlayer(query:$q cursor:$c) {
+		results {
+			id
+			firstname
+			lastname
+			number
+			team
+		}
+		nextCursor
+	}
+}`
+
 describe('find player', () => {
 	test('Find by number', async () => {
 		const findQuery = await query({
-			query: gql`query {
-				findPlayer(query:"1") {
-					id
-					firstname
-					lastname
-					number
-					team
-				}
-			}`
+			query: findGQL,
+			variables: {
+				q: "1"
+			}
 		})
 
-		expect(findQuery.data.findPlayer).toEqual(expect.arrayContaining([{
+		expect(findQuery.data.findPlayer.results.length === 10)
+		expect(findQuery.data.findPlayer.results).toEqual(expect.arrayContaining([{
 			id: '993946',
 			firstname: 'Ben',
 			lastname: 'Keays',
 			team: 'ADELAIDE',
 			number: 1,
 		}]))
+		expect(findQuery.data.findPlayer.nextCursor === 10)
+	})
+
+	test('Find by number, increment cursor', async () => {
+		const findQuery = await query({
+			query: findGQLwithCursor,
+			variables: {
+				q: "1",
+				c: 10
+			}
+		})
+
+		expect(findQuery.data.findPlayer.results.length === 5)
+		expect(findQuery.data.findPlayer.results[0]).toMatchObject({
+			id: '294674'
+		})
+		expect(findQuery.data.findPlayer.nextCursor === -1)
 	})
 
 	test('Find by firstname', async () => {
 		const findQuery = await query({
-			query: gql`query {
-				findPlayer(query:"Ben") {
-					id
-					firstname
-					lastname
-					number
-					team
-				}
-			}`
+			query: findGQL,
+			variables: {
+				q: "Ben"
+			}
 		})
 
-		expect(findQuery.data.findPlayer).toEqual(expect.arrayContaining([{
+		expect(findQuery.data.findPlayer.results).toEqual(expect.arrayContaining([{
 			id: '993946',
 			firstname: 'Ben',
 			lastname: 'Keays',
@@ -134,18 +168,13 @@ describe('find player', () => {
 
 	test('Find by lastname', async () => {
 		const findQuery = await query({
-			query: gql`query {
-				findPlayer(query:"Keays") {
-					id
-					firstname
-					lastname
-					number
-					team
-				}
-			}`
+			query: findGQL,
+			variables: {
+				q: "Keays"
+			}
 		})
 
-		expect(findQuery.data.findPlayer).toEqual(expect.arrayContaining([{
+		expect(findQuery.data.findPlayer.results).toEqual(expect.arrayContaining([{
 			id: '993946',
 			firstname: 'Ben',
 			lastname: 'Keays',
@@ -156,18 +185,13 @@ describe('find player', () => {
 
 	test('Find by firstname mixed case', async () => {
 		const findQuery = await query({
-			query: gql`query {
-				findPlayer(query:"BeN") {
-					id
-					firstname
-					lastname
-					number
-					team
-				}
-			}`
+			query: findGQL,
+			variables: {
+				q: "BeN"
+			}
 		})
 
-		expect(findQuery.data.findPlayer).toEqual(expect.arrayContaining([{
+		expect(findQuery.data.findPlayer.results).toEqual(expect.arrayContaining([{
 			id: '993946',
 			firstname: 'Ben',
 			lastname: 'Keays',
@@ -176,20 +200,15 @@ describe('find player', () => {
 		}]))
 	})
 
-	test('Find by lsatname mixed case', async () => {
+	test('Find by lastname mixed case', async () => {
 		const findQuery = await query({
-			query: gql`query {
-				findPlayer(query:"KeAyS") {
-					id
-					firstname
-					lastname
-					number
-					team
-				}
-			}`
+			query: findGQL,
+			variables: {
+				q: "KeAyS"
+			}
 		})
 
-		expect(findQuery.data.findPlayer).toEqual(expect.arrayContaining([{
+		expect(findQuery.data.findPlayer.results).toEqual(expect.arrayContaining([{
 			id: '993946',
 			firstname: 'Ben',
 			lastname: 'Keays',
@@ -197,4 +216,17 @@ describe('find player', () => {
 			number: 1,
 		}]))
 	})
-})
+
+	test('Find nothing', async () => {
+		const findQuery = await query({
+			query: findGQL,
+			variables: {
+				q: "gobblegobble"
+			}
+		})
+
+		expect(findQuery.data.findPlayer).toEqual({
+			results: [],
+			nextCursor: -1
+		})
+	})})

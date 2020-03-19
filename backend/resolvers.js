@@ -21,8 +21,7 @@ const resolvers = {
 		},
 		async findPlayer(parent, args) {
 			const queries = args.query.split(" ").map(s => s.toLowerCase())
-
-			return playerData.filter((el) => {
+			const results = playerData.filter((el) => {
 				for (const q of queries) {
 					let qNo = +q
 					if (isNaN(qNo)) {
@@ -34,6 +33,15 @@ const resolvers = {
 					}
 				}
 			})
+
+			let cursor = args.cursor ? args.cursor : 0
+			const cursorStride = 10
+			const slicedResults = results.slice(cursor, cursor + cursorStride)
+
+			return {
+				results: slicedResults,
+				nextCursor: slicedResults.length < 10 ? -1 : cursorStride
+			}
 		}
 	}
 }
