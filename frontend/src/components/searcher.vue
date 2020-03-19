@@ -47,15 +47,21 @@ export default {
 		findPlayer: {
 			query: gql`query find($q:String!){
 				findPlayer(query:$q) {
-					id
-					firstname
-					lastname
-					team
-					number
+					results {
+						id
+						firstname
+						lastname
+						team
+						number
+					}
+					nextCursor
 				}
 			}`,
 			variables() {
 				return { q: this.query }
+			},
+			update(data) {
+				return data.findPlayer.results
 			},
 			prefetch: false
 		},
