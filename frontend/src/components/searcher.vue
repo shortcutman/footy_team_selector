@@ -7,7 +7,8 @@
 		<ul>
 			<li v-for="result in findPlayer">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)"></li>
 			<li v-if="nextCursor != -1" @click="showMoreSearchResults()">Click for more results</li>
-			<li v-else-if="query.length != 0">No more results</li>
+			<li v-else-if="query.length != 0 && findPlayer.length != 0">No more results</li>
+			<li v-else-if="query.length != 0 && findPlayer.length === 0">No results</li>
 		</ul>
 	</div>
 </div>
