@@ -24,8 +24,12 @@ export default {
 		return {
 			query: '',
 			findPlayer: [],
-			nextCursor: -1,
-			canAdd: true
+			nextCursor: -1
+		}
+	},
+	computed: {
+		canAdd() {
+			return teamUtilities.teamLength(this.currentTeam) < teamUtilities.maxTeamLength
 		}
 	},
 	methods: {
@@ -37,8 +41,6 @@ export default {
 					}
 				`,
 				variables: { p: player }
-			}).then(({ data }) => {
-				this.canAdd = teamUtilities.teamLength(data.addPlayerToTeam) < teamUtilities.maxTeamLength
 			}).catch((error) => {
 				console.log(error)
 			})
