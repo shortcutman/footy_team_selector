@@ -2,7 +2,7 @@
 <div>
 	<div id="team">
 		<div v-for="(player, position) in currentTeam" >
-			<drag :transfer-data="position">
+			<drag :transfer-data="{position, player}">
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
 				  	  @dragleave="dragLeave(...arguments)">
@@ -57,18 +57,32 @@ export default {
 			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
 			player.classList.remove('selection')
 		},
-		swapPlayers(dropPosition, dragPosition, nativeEvent) {
-			this.$apollo.mutate({
-				mutation: gql`
-					mutation($pA:String! $pB:String!) {
-						swapPositionsInTeam(positionA:$pA positionB:$pB) @client
+		swapPlayers(dropPosition, drag, nativeEvent) {
+			if (drag.position) {
+				this.$apollo.mutate({
+					mutation: gql`
+						mutation($pA:String! $pB:String!) {
+							swapPositionsInTeam(positionA:$pA positionB:$pB) @client
+						}
+					`,
+					variables: {
+						pA: dropPosition,
+						pB: drag.position
 					}
-				`,
-				variables: {
-					pA: dropPosition,
-					pB: dragPosition
-				}
-			})
+				})
+			} else if (drag.player) {
+				this.$apollo.mutate({
+					mutation: gql`
+						mutation($pos:String! $play:String!) {
+							addPlayerToPosition(position:$pos player:$play) @client
+						}
+					`,
+					variables: {
+						pos: dropPosition,
+						play: drag.player
+					}
+				})
+			}
 
 			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
 			player.classList.remove('selection')
