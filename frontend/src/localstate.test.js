@@ -146,6 +146,71 @@ describe('mutation tests', () => {
 		})
 	})
 
+	describe('addPlayerToPosition', () => {
+		beforeEach(resetCache)
+
+		test('successful call with empty position and nonexistent player', () => {
+			const { currentTeam } = cache.readQuery({query: localstate.team.fullTeamQuery})
+			expect(currentTeam["FULLF"] === null)
+			expect(localstate.team.playerInTeam(playerA, currentTeam) === false)
+
+			const result = localstate.resolvers.Mutation.addPlayerToPosition(null, {
+				position: "FULLF",
+				player: playerA
+			}, {
+				cache
+			})
+
+			expect(result["FULLF"]).toMatchObject(playerA)
+		})
+
+		test('successful call with full position and nonexistent player', () => {
+			const resultAddA = localstate.resolvers.Mutation.addPlayerToTeam(null, {
+				player: playerA
+			}, {
+				cache
+			})
+			expect(localstate.team.teamLength(resultAddA) === 1)
+			expect(resultAddA["FPOCK1"]).toMatchObject(playerA)
+
+			const { currentTeam } = cache.readQuery({query: localstate.team.fullTeamQuery})
+			expect(localstate.team.playerInTeam(playerB, currentTeam) === false)
+
+			const result = localstate.resolvers.Mutation.addPlayerToPosition(null, {
+				position: "FPOCK1",
+				player: playerB
+			}, {
+				cache
+			})
+
+			expect(result["FPOCK1"]).toMatchObject(playerB)
+			expect(localstate.team.playerInTeam(playerA, currentTeam) === false)
+		})
+
+		test('successful call with empty position and existent player', () => {
+			const resultAddA = localstate.resolvers.Mutation.addPlayerToTeam(null, {
+				player: playerA
+			}, {
+				cache
+			})
+			expect(localstate.team.teamLength(resultAddA) === 1)
+			expect(resultAddA["FPOCK1"]).toMatchObject(playerA)
+
+			const { currentTeam } = cache.readQuery({query: localstate.team.fullTeamQuery})
+
+			const result = localstate.resolvers.Mutation.addPlayerToPosition(null, {
+				position: "FULLF",
+				player: playerA
+			}, {
+				cache
+			})
+
+			expect(result["FPOCK1"]).toBeNull()
+			expect(result["FULLF"]).toMatchObject(playerA)
+			expect(localstate.team.playerInTeam(playerA, currentTeam) === false)
+		})
+	})
+
 	describe('swapPlayersInTeam', () => {
 		beforeAll(resetCache)
 

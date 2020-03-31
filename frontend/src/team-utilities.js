@@ -213,10 +213,15 @@ function playerInTeam(player, team) {
 	return Object.values(team).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id) ? true : false
 }
 
+function playerInTeamAtPosition(player, team) {
+	return Object.keys(team).find(key => key && key !== '__typename' && team[key] && team[key].id === player.id)
+}
+
 export default {
 	fullTeamQuery,
 	emptyTeam,
 	teamLength,
 	maxTeamLength,
-	playerInTeam
+	playerInTeam,
+	playerInTeamAtPosition
 }

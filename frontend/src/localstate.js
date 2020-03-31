@@ -29,6 +29,7 @@ export const typeDefs = gql`
 
 	type Mutation {
 		addPlayerToTeam(player:Player!): Team!
+		addPlayerToPosition(position:String! player:Player!): Team!
 		removePlayerFromTeam(player:Player!): Team!
 		swapPlayersInTeam(playerA:Player! playerB:Player!): Team!
 		swapPositionsInTeam(positionA:String! positionB:String!): Team!
@@ -71,6 +72,20 @@ const resolvers = {
 			console.assert(removed, "Player requested for removal not in team")
 
 			cache.writeData({ data: { currentTeam }})
+			return currentTeam
+		},
+		addPlayerToPosition: (_, {position, player}, {cache}) => {
+			const { currentTeam } = cache.readQuery({query: teamUtilities.fullTeamQuery})
+
+			const playerAtPosition = teamUtilities.playerInTeamAtPosition(player, currentTeam)
+			if (playerAtPosition) {
+				currentTeam[playerAtPosition] = null
+			}
+
+			currentTeam[position] = player
+			cache.writeData({data: {
+				currentTeam: currentTeam
+			}})
 			return currentTeam
 		},
 		swapPlayersInTeam: (_, {playerA, playerB}, {cache}) => {
