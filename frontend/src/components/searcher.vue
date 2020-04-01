@@ -1,17 +1,19 @@
 <template>
 <div>
-	<div>
-		<span>Search for player: <input type="text" name="query" v-model="query"></span>
-	</div>
-	<div>
-		<ul>
-			<li v-for="result in findPlayer">
-				<drag :transfer-data="{position: null, player: result}">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)"></drag>
-			</li>
-			<li v-if="nextCursor != -1" @click="showMoreSearchResults()">Click for more results</li>
-			<li v-else-if="query.length != 0 && findPlayer.length != 0">No more results</li>
-			<li v-else-if="query.length != 0 && findPlayer.length === 0">No results</li>
-		</ul>
+	<div id="search">
+		<div id="input">
+			<span>Search: </span><input type="text" name="query" v-model="query" placeholder="Player Name">
+		</div>
+		<div>
+			<ul>
+				<li v-for="result in findPlayer">
+					<drag :transfer-data="{position: null, player: result}">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)"></drag>
+				</li>
+				<li v-if="nextCursor != -1" @click="showMoreSearchResults()">Click for more results</li>
+				<li v-else-if="query.length != 0 && findPlayer.length != 0">No more results</li>
+				<li v-else-if="query.length != 0 && findPlayer.length === 0">No results</li>
+			</ul>
+		</div>
 	</div>
 </div>
 </template>
@@ -113,5 +115,24 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+
+#search {
+	width: 100%;
+	max-width: 250px;
+}
+
+#input {
+	width: 100%;
+	display: flex;
+}
+
+#input > span {
+	margin: 2px;
+}
+
+#input > input {
+	flex-grow: 1;
+}
+
 </style>
