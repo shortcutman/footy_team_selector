@@ -210,7 +210,7 @@ function calcMaxTeamLength() {
 const maxTeamLength = calcMaxTeamLength()
 
 function playerInTeam(player, team) {
-	return Object.values(team).find(el => el && typeof el === 'object' && 'id' in el && el.id === player.id) ? true : false
+	return Object.values(team).some(el => el && typeof el === 'object' && 'id' in el && el.id === player.id)
 }
 
 function playerInTeamAtPosition(player, team) {
