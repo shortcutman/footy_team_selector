@@ -104,6 +104,8 @@ export default {
 #team {
 	display: inline-grid;
 	grid-template-columns: auto auto auto;
+	grid-row-gap: 5px;
+	grid-column-gap: 3px;
 }
 
 .player {
@@ -114,10 +116,6 @@ export default {
 	display: grid;
 	grid-template-areas: "h h" "n c";
 
-	margin-left: auto;
-	margin-right: auto;
-	margin-top: 5px;
-	margin-bottom: 5px;
 	border-color: black;
 	border-radius: 8px;
 	border-style: solid;
