@@ -119,7 +119,6 @@ export default {
 
 #search {
 	width: 100%;
-	max-width: 250px;
 }
 
 #input {
