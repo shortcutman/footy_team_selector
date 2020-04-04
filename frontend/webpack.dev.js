@@ -10,14 +10,13 @@ module.exports = merge(common, {
 		port: 8080,
 		compress: false,
 		proxy: {
-			'/graphql': 'http://localhost:80/graphql',
-			'/playground': 'http://localhost:80/playground'
+			'/graphql': 'http://0.0.0.0:80/graphql',
+			'/playground': 'http://0.0.0.0:80/'
 		}
 	},
 	plugins: [
 		new webpack.DefinePlugin({
-			HTTP_GRAPHQL_URL: JSON.stringify("http://localhost:80/graphql"),
-			WS_GRAPHQL_URL: JSON.stringify("ws://localhost:80/graphql")
+			HTTP_GRAPHQL_URL: JSON.stringify("/graphql")
 		})
 	]
 })

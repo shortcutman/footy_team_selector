@@ -17,7 +17,7 @@ new Vue({
 	apolloProvider: new VueApollo({
 		defaultClient: new ApolloClient({
 			link: new HttpLink({
-				uri: "http://localhost:80/graphql"
+				uri: HTTP_GRAPHQL_URL
 			}),
 			cache,
 			typeDefs: localstate.typeDefs,
