@@ -22,15 +22,34 @@ export default {
 
 #app {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: center;
 }
 
 #search {
+  margin: 10px;
 }
 
-#team {
+@media (max-width: 414px) { /* small screens */
+  #app {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  #team {
+    width: 100%;
+  }
+}
+
+@media (min-width: 415px) { /* big screens */
+  #app {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  #search {
+    max-width: 250px;
+  }
 }
 
 </style>
