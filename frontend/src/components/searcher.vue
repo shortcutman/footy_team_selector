@@ -2,7 +2,7 @@
 <div>
 	<div id="search">
 		<div id="input">
-			<span>Search: </span><input type="text" name="query" v-model="query" placeholder="Player Name">
+			<label>Search:</label><input type="text" name="query" v-model="query" placeholder="Player Name">
 		</div>
 		<div>
 			<ul>
@@ -124,10 +124,16 @@ export default {
 #input {
 	width: 100%;
 	display: flex;
+	align-items: baseline;
 }
 
-#input > span {
-	margin: 2px;
+#input * {
+	font-family: sans-serif;
+	font-size: 16px;
+}
+
+#input > label {
+	margin-right: 5px;
 }
 
 #input > input {
