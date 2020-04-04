@@ -103,7 +103,7 @@ export default {
 <style scoped>
 #team_ {
 	display: grid;
-	grid-template-columns: 33% 33% 33%;
+	grid-template-columns: auto auto auto;
 	grid-row-gap: 5px;
 	grid-column-gap: 3px;
 }
@@ -126,7 +126,6 @@ export default {
 }
 
 .player > * {
-	/*margin: auto;*/
 	text-align: center;
 	vertical-align: middle;
 }
