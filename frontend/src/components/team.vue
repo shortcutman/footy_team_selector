@@ -1,7 +1,7 @@
 <template>
 <div>
-	<div id="team">
-		<div v-for="(player, position) in currentTeam" >
+	<div id="team_">
+		<div v-for="(player, position) in currentTeam">
 			<drag :transfer-data="{position, player}">
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
@@ -101,15 +101,14 @@ export default {
 </script>
 
 <style scoped>
-#team {
-	display: inline-grid;
-	grid-template-columns: auto auto auto;
+#team_ {
+	display: grid;
+	grid-template-columns: 33% 33% 33%;
 	grid-row-gap: 5px;
 	grid-column-gap: 3px;
 }
 
 .player {
-	width: 120px;
 	height: 50px;
 	background-color: white;
 
@@ -127,7 +126,7 @@ export default {
 }
 
 .player > * {
-	margin: auto;
+	/*margin: auto;*/
 	text-align: center;
 	vertical-align: middle;
 }
