@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div id="team_">
-		<div v-for="(player, position) in currentTeam" class="draggable">
+		<div v-for="(player, position) in currentTeam" class="draggable dropzone">
 <!-- 			<drag :transfer-data="{position, player}">
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
@@ -56,6 +56,19 @@ export default {
 					event.target.style.left = null
 					event.target.style.top = null
 				}
+			}
+		})
+
+		interact('.dropzone').dropzone({
+			accept: '.draggable',
+			ondrop(event) {
+				console.log(event)
+			},
+			ondragenter(event) {
+				event.currentTarget.classList.add('selection')
+			},
+			ondragleave(event) {
+				event.currentTarget.classList.remove('selection')
 			}
 		})
 	},
@@ -154,7 +167,7 @@ export default {
 	border-width: 2px;
 }
 
-.selection {
+.selection > * {
 	background-color: grey;
 }
 
