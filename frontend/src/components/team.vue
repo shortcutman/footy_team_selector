@@ -6,12 +6,12 @@
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
 				  	  @dragleave="dragLeave(...arguments)">
-					<div v-if="player != null && position != '__typename'" class="player">
+					<div v-if="player != null" class="player">
 						<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
 						<div class="number">{{ player.number }}</div>
 						<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
 					</div>
-					<div v-else-if="position != '__typename'" class="player">
+					<div v-else class="player">
 						<div class="name">Nobody here</div>
 						<div class="number">0</div>
 						<div class="controls"></div>
@@ -90,7 +90,12 @@ export default {
 	},
 	apollo: {
 		currentTeam: {
-			query: teamUtilities.fullTeamQuery
+			query: teamUtilities.fullTeamQuery,
+			update(data) {
+				return Object.keys(data.currentTeam)
+					.filter(key => key !== '__typename')
+					.reduce((res, key) => (res[key] = data.currentTeam[key], res), {})
+			}
 		}
 	},
 	components: {
