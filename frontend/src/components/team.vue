@@ -135,7 +135,7 @@ export default {
 	grid-column-gap: 3px;
 }
 
-.draggable {
+.draggable_team {
 	touch-action: none;
 	user-select: none;
 	-webkit-user-select: none;
