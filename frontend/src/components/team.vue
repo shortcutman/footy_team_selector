@@ -1,11 +1,11 @@
 <template>
 <div>
 	<div id="team_">
-		<div v-for="(player, position) in currentTeam">
-			<drag :transfer-data="{position, player}">
+		<div v-for="(player, position) in currentTeam" class="draggable">
+<!-- 			<drag :transfer-data="{position, player}">
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
-				  	  @dragleave="dragLeave(...arguments)">
+				  	  @dragleave="dragLeave(...arguments)"> -->
 					<div v-if="player != null" class="player">
 						<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
 						<div class="number">{{ player.number }}</div>
@@ -16,8 +16,8 @@
 						<div class="number">0</div>
 						<div class="controls"></div>
 					</div>
-				</drop>
-			</drag>
+<!-- 				</drop>
+			</drag> -->
 		</div>
 	</div>
 </div>
@@ -28,6 +28,7 @@
 import teamUtilities from '../team-utilities.js'
 import gql from 'graphql-tag'
 import {Drag, Drop} from 'vue-drag-drop'
+import interact from 'interactjs'
 
 export default {
 	name: 'team',
@@ -35,6 +36,28 @@ export default {
 		return {
 			currentTeam: []
 		}
+	},
+	mounted: () => {
+		interact('.draggable').draggable({
+			listeners: {
+				start(event) {
+					event.target.style.position = 'relative'
+					event.target.style.left = 0
+					event.target.style.top = 0
+				},
+				move(event) {
+					const rx = parseInt(event.target.style.left, 10) + event.dx
+					const ry = parseInt(event.target.style.top, 10) + event.dy
+					event.target.style.left = `${rx}px`
+					event.target.style.top = `${ry}px`
+				},
+				end(event) {
+					event.target.style.position = null
+					event.target.style.left = null
+					event.target.style.top = null
+				}
+			}
+		})
 	},
 	methods: {
 		deletePlayer(player) {
@@ -111,6 +134,11 @@ export default {
 	grid-template-columns: auto auto auto;
 	grid-row-gap: 5px;
 	grid-column-gap: 3px;
+}
+
+.draggable {
+	touch-action: none;
+	user-select: none;
 }
 
 .player {
