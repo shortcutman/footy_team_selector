@@ -1,7 +1,10 @@
 <template>
 <div>
 	<div id="team_">
-		<div v-for="(player, position) in currentTeam" v-bind:position="position" class="draggable dropzone">
+		<div v-for="(player, position) in currentTeam"
+			 v-bind:position="position"
+			 v-bind:playerid="player ? player.id : -1"
+			 class="draggable dropzone">
 <!-- 			<drag :transfer-data="{position, player}">
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
@@ -37,13 +40,17 @@ export default {
 			currentTeam: []
 		}
 	},
-	mounted: () => {
+	mounted() {
 		interact('.draggable').draggable({
 			listeners: {
 				start(event) {
 					event.target.style.position = 'relative'
 					event.target.style.left = 0
 					event.target.style.top = 0
+					event.interactable.model = {
+						position: event.target.attributes.position.value,
+						player: event.target.attributes.playerid.value
+					}
 				},
 				move(event) {
 					const rx = parseInt(event.target.style.left, 10) + event.dx
@@ -61,11 +68,10 @@ export default {
 
 		interact('.dropzone').dropzone({
 			accept: '.draggable',
-			ondrop(event) {
-				// debugger
-				console.log(event)
-				console.log(event.currentTarget.attributes.playerId)
-				console.log(event.currentTarget.attributes.position)
+			ondrop: (event) => {
+				this.swapPlayers(event.currentTarget.attributes.position.value, event.draggable.model, null)
+
+				event.currentTarget.classList.remove('selection')
 			},
 			ondragenter(event) {
 				event.currentTarget.classList.add('selection')
@@ -122,9 +128,6 @@ export default {
 					}
 				})
 			}
-
-			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
-			player.classList.remove('selection')
 		}
 	},
 	apollo: {
