@@ -5,22 +5,16 @@
 			 v-bind:position="position"
 			 v-bind:playerid="player ? player.id : -1"
 			 class="draggable dropzone">
-<!-- 			<drag :transfer-data="{position, player}">
-				<drop @drop="swapPlayers(position, ...arguments)"
-					  @dragover="dragOver(...arguments)"
-				  	  @dragleave="dragLeave(...arguments)"> -->
-					<div v-if="player != null" class="player">
-						<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
-						<div class="number">{{ player.number }}</div>
-						<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
-					</div>
-					<div v-else class="player">
-						<div class="name">Nobody here</div>
-						<div class="number">0</div>
-						<div class="controls"></div>
-					</div>
-<!-- 				</drop>
-			</drag> -->
+			<div v-if="player != null" class="player">
+				<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
+				<div class="number">{{ player.number }}</div>
+				<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
+			</div>
+			<div v-else class="player">
+				<div class="name">Nobody here</div>
+				<div class="number">0</div>
+				<div class="controls"></div>
+			</div>
 		</div>
 	</div>
 </div>
@@ -30,7 +24,6 @@
 
 import teamUtilities from '../team-utilities.js'
 import gql from 'graphql-tag'
-import {Drag, Drop} from 'vue-drag-drop'
 import interact from 'interactjs'
 
 export default {
@@ -94,14 +87,6 @@ export default {
 				this.currentTeam = data.removePlayerFromTeam
 			})
 		},
-		dragOver(transferData, nativeEvent) {
-			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
-			player.classList.add('selection')
-		},
-		dragLeave(transferData, nativeEvent) {
-			const player = nativeEvent.currentTarget.getElementsByClassName('player')[0]
-			player.classList.remove('selection')
-		},
 		swapPlayers(dropPosition, drag, nativeEvent) {
 			if (drag.position) {
 				this.$apollo.mutate({
@@ -139,10 +124,6 @@ export default {
 					.reduce((res, key) => (res[key] = data.currentTeam[key], res), {})
 			}
 		}
-	},
-	components: {
-		Drag,
-		Drop
 	}
 }
 </script>
