@@ -1,7 +1,7 @@
 <template>
 <div>
 	<div id="team_">
-		<div v-for="(player, position) in currentTeam" class="draggable dropzone">
+		<div v-for="(player, position) in currentTeam" v-bind:position="position" class="draggable dropzone">
 <!-- 			<drag :transfer-data="{position, player}">
 				<drop @drop="swapPlayers(position, ...arguments)"
 					  @dragover="dragOver(...arguments)"
@@ -62,7 +62,10 @@ export default {
 		interact('.dropzone').dropzone({
 			accept: '.draggable',
 			ondrop(event) {
+				// debugger
 				console.log(event)
+				console.log(event.currentTarget.attributes.playerId)
+				console.log(event.currentTarget.attributes.position)
 			},
 			ondragenter(event) {
 				event.currentTarget.classList.add('selection')
