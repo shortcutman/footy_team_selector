@@ -42,7 +42,6 @@ export default {
 					event.target.style.top = 0
 					event.interactable.model = {
 						position: event.target.attributes.position.value,
-						player: event.target.attributes.playerid.value
 					}
 				},
 				move(event) {
