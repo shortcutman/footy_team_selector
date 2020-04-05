@@ -58,7 +58,7 @@ export default {
 					event.target.style.top = null
 				}
 			}
-		})
+		}).styleCursor(false)
 	},
 	computed: {
 		canAdd() {

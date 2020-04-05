@@ -56,7 +56,7 @@ export default {
 					event.target.style.top = null
 				}
 			}
-		})
+		}).styleCursor(false)
 
 		interact('.dropzone').dropzone({
 			accept: '.draggable_team, .draggable_search',
