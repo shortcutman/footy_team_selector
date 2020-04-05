@@ -112,7 +112,7 @@ export default {
 			} else if (drag.player) {
 				this.$apollo.mutate({
 					mutation: gql`
-						mutation($pos:String! $play:String!) {
+						mutation($pos:String! $play:Player!) {
 							addPlayerToPosition(position:$pos player:$play) @client
 						}
 					`,
