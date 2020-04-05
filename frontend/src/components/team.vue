@@ -59,7 +59,7 @@ export default {
 		})
 
 		interact('.dropzone').dropzone({
-			accept: '.draggable_team',
+			accept: '.draggable_team, .draggable_search',
 			ondrop: (event) => {
 				this.swapPlayers(event.currentTarget.attributes.position.value, event.draggable.model, null)
 

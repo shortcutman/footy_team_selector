@@ -6,8 +6,10 @@
 		</div>
 		<div>
 			<ul>
-				<li v-for="result in findPlayer">
-					<drag :transfer-data="{position: null, player: result}">{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)"></drag>
+				<li v-for="result in findPlayer"
+					v-bind:playerid="result.id"
+					class="draggable_search">
+					{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)">
 				</li>
 				<li v-if="nextCursor != -1" @click="showMoreSearchResults()">Click for more results</li>
 				<li v-else-if="query.length != 0 && findPlayer.length != 0">No more results</li>
@@ -22,7 +24,7 @@
 
 import teamUtilities from '../team-utilities.js'
 import gql from 'graphql-tag'
-import {Drag, Drop} from 'vue-drag-drop'
+import interact from 'interactjs'
 
 export default {
 	name: 'searcher',
@@ -32,6 +34,31 @@ export default {
 			findPlayer: [],
 			nextCursor: -1
 		}
+	},
+	mounted() {
+		interact('.draggable_search').draggable({
+			listeners: {
+				start: (event) => {
+					event.target.style.position = 'relative'
+					event.target.style.left = 0
+					event.target.style.top = 0
+					event.interactable.model = {
+						player: this.findPlayer.find(p => p.id == event.target.attributes.playerid.value)
+					}
+				},
+				move(event) {
+					const rx = parseInt(event.target.style.left, 10) + event.dx
+					const ry = parseInt(event.target.style.top, 10) + event.dy
+					event.target.style.left = `${rx}px`
+					event.target.style.top = `${ry}px`
+				},
+				end(event) {
+					event.target.style.position = null
+					event.target.style.left = null
+					event.target.style.top = null
+				}
+			}
+		})
 	},
 	computed: {
 		canAdd() {
@@ -107,10 +134,6 @@ export default {
 		currentTeam: {
 			query: teamUtilities.fullTeamQuery
 		}
-	},
-	components: {
-		Drag,
-		Drop
 	}
 }
 </script>
