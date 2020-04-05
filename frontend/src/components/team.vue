@@ -4,7 +4,7 @@
 		<div v-for="(player, position) in currentTeam"
 			 v-bind:position="position"
 			 v-bind:playerid="player ? player.id : -1"
-			 class="draggable dropzone">
+			 class="draggable_team dropzone">
 			<div v-if="player != null" class="player">
 				<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
 				<div class="number">{{ player.number }}</div>
@@ -34,7 +34,7 @@ export default {
 		}
 	},
 	mounted() {
-		interact('.draggable').draggable({
+		interact('.draggable_team').draggable({
 			listeners: {
 				start(event) {
 					event.target.style.position = 'relative'
@@ -59,7 +59,7 @@ export default {
 		})
 
 		interact('.dropzone').dropzone({
-			accept: '.draggable',
+			accept: '.draggable_team',
 			ondrop: (event) => {
 				this.swapPlayers(event.currentTarget.attributes.position.value, event.draggable.model, null)
 
