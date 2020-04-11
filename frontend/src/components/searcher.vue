@@ -151,7 +151,6 @@ export default {
 }
 
 #input * {
-	font-family: sans-serif;
 	font-size: 16px;
 }
 

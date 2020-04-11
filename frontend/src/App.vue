@@ -20,6 +20,10 @@ export default {
 
 <style scoped>
 
+* {
+  font-family: sans-serif;
+}
+
 #app {
   display: flex;
 }
