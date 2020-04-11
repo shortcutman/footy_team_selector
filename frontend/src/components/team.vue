@@ -5,15 +5,13 @@
 			 v-bind:position="position"
 			 v-bind:playerid="player ? player.id : -1"
 			 class="draggable_team dropzone">
-			<div v-if="player != null" class="player">
+			<div v-if="player != null" class="position player">
 				<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
 				<div class="number">{{ player.number }}</div>
 				<div class="controls"><input type="Submit" value="Delete" @click="deletePlayer(player)"></div>
 			</div>
-			<div v-else class="player">
-				<div class="name">Nobody here</div>
-				<div class="number">0</div>
-				<div class="controls"></div>
+			<div v-else class="position nobody">
+				Nobody here
 			</div>
 		</div>
 	</div>
@@ -141,13 +139,9 @@ export default {
 	-webkit-user-select: none;
 }
 
-.player {
+.position {
 	height: 50px;
 	background-color: white;
-
-	display: grid;
-	grid-template-areas: "h h" "n c";
-
 	border-color: black;
 	border-radius: 8px;
 	border-style: solid;
@@ -158,6 +152,11 @@ export default {
 	background-color: grey;
 }
 
+.player {
+	display: grid;
+	grid-template-areas: "h h" "n c";
+}
+
 .player > * {
 	text-align: center;
 	vertical-align: middle;
@@ -165,6 +164,8 @@ export default {
 
 .player > .name {
 	grid-area: h;
+	font-size: 16px;
+	margin: 2px;
 }
 
 .player > .number {
@@ -173,5 +174,11 @@ export default {
 
 .player > .controls {
 	grid-area: c;
+}
+
+.nobody {
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 </style>
