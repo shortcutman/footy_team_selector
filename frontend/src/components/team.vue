@@ -40,7 +40,7 @@ export default {
 					event.target.style.left = 0
 					event.target.style.top = 0
 					event.interactable.model = {
-						position: event.target.attributes.position.value,
+						position: event.target.attributes.position.value
 					}
 				},
 				move(event) {
