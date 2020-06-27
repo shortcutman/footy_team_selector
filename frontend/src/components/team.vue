@@ -4,7 +4,8 @@
 		<div v-for="(player, position) in currentTeam"
 			 v-bind:position="position"
 			 v-bind:playerid="player ? player.id : -1"
-			 class="draggable_team dropzone">
+			 class="dropzone"
+			 v-bind:class="{ draggable_team: player ? true : false}">
 			<div v-if="player != null" class="position player">
 				<div class="name">{{ player.firstname }} {{ player.lastname }}</div>
 				<div class="number">{{ player.number }}</div>
