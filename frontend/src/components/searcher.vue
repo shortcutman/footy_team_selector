@@ -7,6 +7,7 @@
 		<div>
 			<ul>
 				<li v-for="result in findPlayer"
+					v-bind:key="result"
 					v-bind:playerid="result.id"
 					class="draggable_search">
 					{{ result.number }}: {{ result.firstname }} {{ result.lastname }} <input type="submit" name="add" value="Add" @click="addPlayer(result)" :disabled="!canAdd || inCurrentTeam(result)">
