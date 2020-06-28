@@ -146,8 +146,8 @@ export default {
 }
 
 #input {
-	width: 100%;
 	display: flex;
+	flex-direction: row;
 	align-items: baseline;
 }
 
@@ -160,6 +160,7 @@ export default {
 }
 
 #input > input {
+	width: 10px;
 	flex-grow: 1;
 }
 
