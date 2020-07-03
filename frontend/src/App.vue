@@ -1,7 +1,11 @@
 <template>
-  <div id="app">
-    <searcher id="search"></searcher>
-    <team id="team"></team>
+  <div>
+    <h1 id="header">AFL Team Selector</h1>
+    <hr id="rule">
+    <div id="app">
+      <searcher id="search"></searcher>
+      <team id="team"></team>
+    </div>
   </div>
 </template>
 
@@ -24,6 +28,18 @@ export default {
   font-family: sans-serif;
 }
 
+#header {
+  font-family: Futura;
+  font-style: italic;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 0pt;
+}
+
+#rule {
+  border: 0.5pt solid grey;
+}
+
 #app {
   display: flex;
 }
@@ -39,6 +55,10 @@ export default {
     align-items: center;
   }
 
+  #rule {
+    width: 100%
+  }
+
   #team {
     width: 100%;
   }
@@ -49,6 +69,10 @@ export default {
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+  }
+
+  #rule {
+    width: 500pt;
   }
 
   #search {

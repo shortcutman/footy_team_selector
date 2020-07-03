@@ -142,12 +142,18 @@ export default {
 }
 
 .position {
-	height: 50px;
 	background-color: white;
 	border-color: black;
-	border-radius: 8px;
+	border-radius: 5pt;
 	border-style: solid;
-	border-width: 2px;
+	border-width: 1pt;
+	padding: 2pt;
+	width: 80pt;
+	height: 50pt;
+}
+
+.dropzone:last-child {
+	grid-column-start: 2;
 }
 
 .selection > * {
@@ -166,12 +172,14 @@ export default {
 
 .player > .name {
 	grid-area: h;
-	font-size: 16px;
+	/* height: 2em; */
 	margin: 2px;
 }
 
 .player > .number {
 	grid-area: n;
+	text-align: center;
+	vertical-align: middle;
 }
 
 .player > .controls {
